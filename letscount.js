@@ -39,12 +39,46 @@ $(function() {
         var resultText = $('#result-text');
         var units = ['', '万', '億', '兆', '京', '垓', '𥝱', '穣', '溝', '澗', '正', '載', '極', '恒河沙', '阿僧祇', '那由他', '不可思議', '無量大数']; // 大きな数の単位
 
-        drawAllPath();
+        drawGrid();
 
         // 魔方陣を表示する
         function onMessage(e) {
         }
 
+        // 描画
+        function drawGrid() {
+            var i, p1, p2;
+            ctx.beginPath();
+            ctx.clearRect(0, 0, width, height);
+            ctx.lineWidth = 3;
+
+            //横線
+            for(i=0;i<=rows;i++) {
+                p1 = toScreen(0, i);
+                p2 = toScreen(cols, i);
+
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+            }
+
+            //縦線
+            for(i=0;i<=cols;i++) {
+                p1 = toScreen(i, 0);
+                p2 = toScreen(i, rows);
+
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+            }
+            ctx.stroke();
+        }
+
+        // 画面上の位置を計算
+        function toScreen(x, y) {
+            return {
+                x: x * xstep + margin,
+                y: y * ystep + margin
+            };
+        }
     }
 
     function resize() {
