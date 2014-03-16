@@ -43,6 +43,15 @@ $(function() {
 
         // 魔方陣を表示する
         function onMessage(e) {
+            var data = e.data;
+            var countKanji;
+            if(data.count) {
+                countKanji = showCount(data.count);
+            }
+            if(data.time) {
+                picopico.stop();
+                console.log('Time: ' + data.time + 'ms');
+            }
         }
 
         // 描画
@@ -70,6 +79,28 @@ $(function() {
                 ctx.lineTo(p2.x, p2.y);
             }
             ctx.stroke();
+        }
+
+        // 経路数の表示
+        function showCount(count) {
+            var s = '', i;
+            for(i=0;i<count.length;i++) {
+                s = (count[i+1] ? addzero(count[i]) : count[i]) + (units[i] || '') + s;
+            }
+            resultText.text(s);
+            return s;
+
+            // 0埋めをする
+            function addzero(count) {
+                if(count>=1000) {
+                    return count;
+                } else if(count>=100) {
+                return '0' + count;
+                } else if(count>=10) {
+                return '00' + count;
+                }
+                return '000' + count;
+            }
         }
 
         // 画面上の位置を計算
