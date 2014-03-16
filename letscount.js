@@ -45,6 +45,10 @@ $(function() {
         function onMessage(e) {
             var data = e.data;
             var countKanji;
+            drawGrid();
+            if(data.matrix) {
+                drawMatrix(data.matrix);
+            }
             if(data.count) {
                 countKanji = showCount(data.count);
             }
@@ -79,6 +83,20 @@ $(function() {
                 ctx.lineTo(p2.x, p2.y);
             }
             ctx.stroke();
+        }
+
+        // 魔方陣の中の数字を描画する
+        function drawMatrix(matrix) {
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.font = (xstep * 0.5) + "px ''";
+            for(var i = 0; i < rows * cols; i++) {
+                var val = matrix[i];
+                var x = i % cols + 0.5;
+                var y = Math.floor(i / cols) + 0.5;
+                var p = toScreen(x, y);
+                ctx.fillText(val, p.x, p.y, xstep);
+            }
         }
 
         // 経路数の表示

@@ -2,14 +2,21 @@ var PERIOD_SHOW = 0;
 var COUNT_PERIOD_SHOW = 1;
 var SLEEP_TIME = 0;
 var nowimpl = !!Date.now;
-
+var lastMatrix;
 addEventListener('message', onMessage, false);
 
 function onMessage(e) {
     var data = e.data;
+    var startTime = nowimpl ? Date.now() : +new Date();
     if(data.rows == 3) {
         count3();
     }
+    // 結果出力
+    postMessage({
+        matrix: lastMatrix,
+        count: count,
+        time: (nowimpl ? Date.now() : +new Date()) - startTime
+    });
 }
 
 function count3() {
@@ -88,6 +95,7 @@ function show_ans(matrix) {
             count[i+1] = 1;
         }
     }
+    lastMatrix = matrix;
 
     if(count[0] % COUNT_PERIOD_SHOW !=0) return;
 
