@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="letscount.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="letscount.js"></script>
+    <title>おねえさんのコンピュータ</title>
+  </head>
+  <body>
+    <div id="container">
+      <div id="outer-display">
+        <div id="inner-display">
+          <div id="problem">
+            <p class="text-japanese">
+              魔方陣の組み合わせの数
+            </p>
+            <p class="text-english">
+              Total number of the magic squares
+            </p>
+            <p id="problem-text">
+            </p>
+          </div>
+          <div id="patterns">
+            <canvas id="path" width="500" height="500"></canvas>
+          </div>
+          <div id="result">
+            <div id="result-text"></div>
+            <div class="text-japanese">通り</div>
+            <div class="text-english">patterns<br>
+              <a href="#" id="tellchildren">みんなに教えなきゃ！</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="button" value="3×3" rows="3" cols="3">
+      <input type="button" value="4×4" rows="4" cols="4">
+      <input type="button" value="5×5" rows="5" cols="5">
+      <input type="button" value="6×6" rows="6" cols="6">
+      <input type="button" value="stop" rows="-1" cols="-1">
+      <input id="volume" type="range" min="0" max="100" value="0">
+      <div>元ネタ<a href="http://www.youtube.com/watch?v=Q4gTV4r0zRs">『フカシギの数え方』 おねえさんといっしょ！ みんなで数えてみよう！</a></div>
+    </div>
+  </body>
+</html>
