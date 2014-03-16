@@ -1,6 +1,6 @@
 var PERIOD_SHOW = 0;
 var COUNT_PERIOD_SHOW = 1;
-var SLEEP_TIME = 0;
+var SLEEP_TIME = 10;
 var nowimpl = !!Date.now;
 var lastMatrix;
 addEventListener('message', onMessage, false);
@@ -10,6 +10,11 @@ function onMessage(e) {
     var startTime = nowimpl ? Date.now() : +new Date();
     if(data.rows == 3) {
         count3();
+    } else if(data.rows == 4) {
+        PERIOD_SHOW = 0;
+        COUNT_PERIOD_SHOW = 1;
+        SLEEP_TIME = 10;
+        count4();
     }
     // 結果出力
     postMessage({
@@ -21,6 +26,10 @@ function onMessage(e) {
 
 function count3() {
     /* <COUNT3> */
+}
+
+function count4() {
+    /* <COUNT4> */
 }
 
 
