@@ -1,6 +1,6 @@
-var PERIOD_SHOW = 0;
-var COUNT_PERIOD_SHOW = 1;
-var SLEEP_TIME = 10;
+var PERIOD_SHOW = 50;
+var COUNT_PERIOD_SHOW = 31;
+var SLEEP_TIME = 0;
 var nowimpl = !!Date.now;
 var lastMatrix;
 addEventListener('message', onMessage, false);
@@ -15,6 +15,8 @@ function onMessage(e) {
         COUNT_PERIOD_SHOW = 1;
         SLEEP_TIME = 10;
         count4();
+    } else if(data.rows == 5) {
+        count5();
     }
     // 結果出力
     postMessage({
@@ -30,6 +32,10 @@ function count3() {
 
 function count4() {
     /* <COUNT4> */
+}
+
+function count5() {
+    /* <COUNT5> */
 }
 
 

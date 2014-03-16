@@ -130,11 +130,40 @@ my $count4 = square 4, sub {
     decide 34, undef, [14, 24, 44], [31, 32, 33];
 };
 
+my $count5 = square 5, sub {
+    search 22, undef, 1, 25;
+    search 44, 'x22 < x44', 1, 25;
+    search 24, 'x22 < x44', 1, 25;
+    search 42, 'x24 < x42', 1, 25;
+    search 11, undef, 1, 25;
+    second 33, undef, [11, 22, 44];
+    decide 55, undef, [11, 22, 33, 44];
+    second 15, undef, [24, 33, 42];
+    decide 51, undef, [15, 24, 33, 42];
+    search 12, undef, 1, 25;
+    second 13, undef, [11, 12, 15];
+    decide 14, undef, [11, 12, 13, 15];
+    search 21, undef, 1, 25;
+    second 23, undef, [21, 22, 24];
+    decide 25, undef, [21, 22, 23, 24];
+    second 31, undef, [11, 21, 51];
+    decide 41, undef, [11, 21, 31, 51];
+    second 32, undef, [12, 22, 42];
+    decide 52, undef, [12, 22, 32, 42];
+    second 34, undef, [14, 24, 44], [31, 32, 33];
+    decide 35, undef, [31, 32, 33, 34];
+    decide 45, undef, [15, 25, 35, 55];
+    decide 43, undef, [41, 42, 44, 45];
+    decide 53, undef, [13, 23, 33, 43];
+    decide 54, undef, [14, 24, 34, 44], [51, 52, 53, 55];
+};
+
 open my $in, '<', 'count.tmpl.js' or die $!;
 open my $out, '>', 'count.js' or die $!;
 while(my $line = <$in>) {
     $line =~ s(^\s*/\**\s*<COUNT3>\s*\**/)($count3);
     $line =~ s(^\s*/\**\s*<COUNT4>\s*\**/)($count4);
+    $line =~ s(^\s*/\**\s*<COUNT5>\s*\**/)($count5);
     print $out $line;
 }
 close $in;
