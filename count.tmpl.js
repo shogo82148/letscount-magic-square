@@ -26,18 +26,43 @@ function onMessage(e) {
     });
 }
 
-function count3() {
-    /* <COUNT3> */
-}
+function my_asm_module(stdlib, foreign, heap) {
+    "use asm";
 
-function count4() {
-    /* <COUNT4> */
-}
+    var show_ans3 = foreign.show_ans3;
+    var show_ans4 = foreign.show_ans4;
+    var show_ans5 = foreign.show_ans5;
 
-function count5() {
-    /* <COUNT5> */
-}
+    function max(a, b) {
+        a = a | 0;
+        b = b | 0;
+        return ((a|0) < (b|0) ? (b|0) : (a|0)) | 0;
+    }
 
+    function min(a, b) {
+        a = a | 0;
+        b = b | 0;
+        return ((a|0) < (b|0) ? (a|0) : (b|0)) | 0;
+    }
+
+    function count3() {
+        /* <COUNT3> */
+    }
+
+    function count4() {
+        /* <COUNT4> */
+    }
+
+    function count5() {
+        /* <COUNT5> */
+    }
+
+    return {
+        count3: count3,
+        count4: count4,
+        count5: count5
+    };
+}
 
 var count = [0]; // 見つけた魔方陣の数
 var lastShowTime = nowimpl ? Date.now() : +new Date();
@@ -62,7 +87,7 @@ function show_ans(matrix) {
     if(now - lastShowTime < PERIOD_SHOW) return;
     lastShowTime = now;
 
-        // ウエイトを挿入
+    // ウエイトを挿入
     while(now - lastShowTime < SLEEP_TIME) {
         now = nowimpl ? Date.now() : +new Date();
     }
@@ -74,3 +99,20 @@ function show_ans(matrix) {
     });
     lastShowTime = now;
 }
+
+var module = my_asm_module(
+    {}, {
+        show_ans3: function(x11,x12,x13,x21,x22,x23,x31,x32,x33) {
+            show_ans([x11,x12,x13,x21,x22,x23,x31,x32,x33]);
+        },
+        show_ans4: function(x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44) {
+            show_ans([x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44]);
+        },
+        show_ans5: function(x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55) {
+            show_ans([x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55]);
+        }
+    }
+);
+var count3 = module.count3;
+var count4 = module.count4;
+var count5 = module.count5;
