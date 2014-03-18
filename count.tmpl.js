@@ -8,20 +8,24 @@ addEventListener('message', onMessage, false);
 function onMessage(e) {
     var data = e.data;
     var startTime = nowimpl ? Date.now() : +new Date();
+    var no = data.no;
+    var workers = data.workers;
+
     if(data.rows == 3) {
-        count3();
+        count3(no, workers);
     } else if(data.rows == 4) {
         PERIOD_SHOW = 0;
         COUNT_PERIOD_SHOW = 1;
         SLEEP_TIME = 10;
-        count4();
+        count4(no, workers);
     } else if(data.rows == 5) {
-        count5();
+        count5(no, workers);
     }
     // 結果出力
     postMessage({
         matrix: lastMatrix,
         count: count,
+        finished: no,
         time: (nowimpl ? Date.now() : +new Date()) - startTime
     });
 }
@@ -45,15 +49,21 @@ function my_asm_module(stdlib, foreign, heap) {
         return ((a|0) < (b|0) ? (a|0) : (b|0)) | 0;
     }
 
-    function count3() {
+    function count3(no, workers) {
+        no = no | 0;
+        workers = workers | 0;
         /* <COUNT3> */
     }
 
-    function count4() {
+    function count4(no, workers) {
+        no = no | 0;
+        workers = workers | 0;
         /* <COUNT4> */
     }
 
-    function count5() {
+    function count5(no, workers) {
+        no = no | 0;
+        workers = workers | 0;
         /* <COUNT5> */
     }
 
@@ -66,7 +76,7 @@ function my_asm_module(stdlib, foreign, heap) {
 
 var count = [0]; // 見つけた魔方陣の数
 var lastShowTime = nowimpl ? Date.now() : +new Date();
-function show_ans(matrix) {
+function show_ans(no, matrix) {
     // カウントアップ処理
     var i = 0;
     count[0] += 1;
@@ -94,6 +104,7 @@ function show_ans(matrix) {
 
     // 経路表示
     postMessage({
+        no: no,
         matrix: matrix,
         count:  count
     });
@@ -102,14 +113,14 @@ function show_ans(matrix) {
 
 var module = my_asm_module(
     {}, {
-        show_ans3: function(x11,x12,x13,x21,x22,x23,x31,x32,x33) {
-            show_ans([x11,x12,x13,x21,x22,x23,x31,x32,x33]);
+        show_ans3: function(no,x11,x12,x13,x21,x22,x23,x31,x32,x33) {
+            show_ans(no,[x11,x12,x13,x21,x22,x23,x31,x32,x33]);
         },
-        show_ans4: function(x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44) {
-            show_ans([x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44]);
+        show_ans4: function(no,x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44) {
+            show_ans(no,[x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44]);
         },
-        show_ans5: function(x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55) {
-            show_ans([x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55]);
+        show_ans5: function(no,x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55) {
+            show_ans(no,[x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55]);
         }
     }
 );

@@ -4,13 +4,19 @@ $(function() {
     var height = canvas.attr('height') * 1;
     var margin = 10;
     var ctx = canvas[0].getContext('2d');
-    var worker;
+    var workers;
+    var counts;
 
     function start(rows, cols) {
+        var i;
         // 古いワーカーは用済み
-        if(worker) {
-            worker.terminate();
-
+        if(workers) {
+            for(i = 0; i< workers.length; i++) {
+                if(workers[i]) {
+                    workers[i].terminate();
+                }
+            }
+            workers = undefined;
             // ピコピコ終わり
             picopico.stop();
         }
@@ -26,13 +32,26 @@ $(function() {
 
         // 新しいワーカーを作成・初期化
         var workerjs = 'count.js';
-        if(location.hostname == "localhost") {
-            worker = new Worker(workerjs + '?' + Math.random());
-        } else {
-            worker = new Worker(workerjs);
+        var num_workers = $('#parallel').val();
+        workers = [];
+        counts = [];
+        for(i = 0; i < num_workers; i++) {
+            var worker;
+            if(location.hostname == "localhost") {
+                worker = new Worker(workerjs + '?' + Math.random());
+            } else {
+                worker = new Worker(workerjs);
+            }
+            worker.addEventListener('message', onMessage, false);
+            worker.postMessage({
+                rows: rows,
+                cols: cols,
+                no: i,
+                workers: num_workers
+            });
+            workers.push(worker);
+            counts.push([0]);
         }
-        worker.addEventListener('message', onMessage, false);
-        worker.postMessage({rows: rows, cols: cols});
 
         var xstep = (width - 2*margin) / cols;
         var ystep = (height - 2*margin) / rows;
@@ -43,18 +62,25 @@ $(function() {
 
         // 魔方陣を表示する
         function onMessage(e) {
+            var i;
             var data = e.data;
-            var countKanji;
             drawGrid();
             if(data.matrix) {
                 drawMatrix(data.matrix);
             }
             if(data.count) {
-                countKanji = showCount(data.count);
+                counts[data.no] = data.count;
+                showCount(totalCount(counts));
             }
-            if(data.time) {
-                picopico.stop();
-                console.log('Time: ' + data.time + 'ms');
+            if('finished' in data) {
+                console.log('Worker' + data.finished + ': ' + data.time + 'ms');
+                workers[data.finished] = undefined;
+                for(i = 0; i < workers.length; i++) {
+                    if(workers[i]) break;
+                }
+                if( i >= workers.length ) {
+                    picopico.stop();
+                }
             }
         }
 
@@ -119,6 +145,33 @@ $(function() {
                 }
                 return '000' + count;
             }
+        }
+
+        // 合計を計算する
+        function totalCount(counts) {
+            var i, j;
+            var ans = [0];
+            for(i = 0; i < counts.length; i++) {
+                for(j = 0; j < counts[i].length; j++) {
+                    if(ans[j]) {
+                        ans[j] += counts[i][j];
+                    } else {
+                        ans[j] = counts[i][j];
+                    }
+                }
+            }
+            var digit = 0;
+            j = ans.length;
+            for(i=0; i < j || digit > 0; i++) {
+                if(ans[i]) {
+                    ans[i] += digit;
+                } else {
+                    ans[i] = digit;
+                }
+                digit = (ans[i]/10000) | 0;
+                ans[i] %= 10000;
+            }
+            return ans;
         }
 
         // 画面上の位置を計算

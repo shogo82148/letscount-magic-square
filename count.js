@@ -8,20 +8,24 @@ addEventListener('message', onMessage, false);
 function onMessage(e) {
     var data = e.data;
     var startTime = nowimpl ? Date.now() : +new Date();
+    var no = data.no;
+    var workers = data.workers;
+
     if(data.rows == 3) {
-        count3();
+        count3(no, workers);
     } else if(data.rows == 4) {
         PERIOD_SHOW = 0;
         COUNT_PERIOD_SHOW = 1;
         SLEEP_TIME = 10;
-        count4();
+        count4(no, workers);
     } else if(data.rows == 5) {
-        count5();
+        count5(no, workers);
     }
     // 結果出力
     postMessage({
         matrix: lastMatrix,
         count: count,
+        finished: no,
         time: (nowimpl ? Date.now() : +new Date()) - startTime
     });
 }
@@ -45,7 +49,9 @@ function my_asm_module(stdlib, foreign, heap) {
         return ((a|0) < (b|0) ? (a|0) : (b|0)) | 0;
     }
 
-    function count3() {
+    function count3(no, workers) {
+        no = no | 0;
+        workers = workers | 0;
         var max_x13 = 0, max_x22 = 0, min_x13 = 0, min_x22 = 0, x11 = 0, x12 = 0, x13 = 0, x21 = 0, x22 = 0, x23 = 0, x31 = 0, x32 = 0, x33 = 0;
         var used = 0;
         for(x11 = 1; (x11|0) <= (9|0); x11 = x11 + 1 | 0) {
@@ -76,6 +82,7 @@ function my_asm_module(stdlib, foreign, heap) {
                             used = used | (1 << x31);
                             X12: {
                                 x12 = 15 - (x11+x13) | 0;
+                                if(!(( (((x11|0)<<20) + ((x22|0)<<16) + ((x33|0)<<12) + ((x13|0)<<8) + ((x31|0)<<4) + (x12|0) | 0) % (workers|0) | 0) == (no|0))) break X12;
                                 if((x12|0) < (1|0)) break X12;
                                 if(used & (1 << x12)) break X12;
                                 used = used | (1 << x12);
@@ -96,7 +103,7 @@ function my_asm_module(stdlib, foreign, heap) {
                                             if((x32|0) < (1|0)) break X32;
                                             if(used & (1 << x32)) break X32;
                                             used = used | (1 << x32);
-                                            show_ans3(x11|0,x12|0,x13|0,x21|0,x22|0,x23|0,x31|0,x32|0,x33|0);
+                                            show_ans3(no|0,x11|0,x12|0,x13|0,x21|0,x22|0,x23|0,x31|0,x32|0,x33|0);
                                             used = used & ~(1 << x32);
                                         }
                                         used = used & ~(1 << x21);
@@ -118,7 +125,9 @@ function my_asm_module(stdlib, foreign, heap) {
 
     }
 
-    function count4() {
+    function count4(no, workers) {
+        no = no | 0;
+        workers = workers | 0;
         var max_x11 = 0, max_x12 = 0, max_x14 = 0, max_x21 = 0, min_x11 = 0, min_x12 = 0, min_x14 = 0, min_x21 = 0, x11 = 0, x12 = 0, x13 = 0, x14 = 0, x21 = 0, x22 = 0, x23 = 0, x24 = 0, x31 = 0, x32 = 0, x33 = 0, x34 = 0, x41 = 0, x42 = 0, x43 = 0, x44 = 0;
         var used = 0;
         for(x22 = 1; (x22|0) <= (16|0); x22 = x22 + 1 | 0) {
@@ -143,6 +152,7 @@ function my_asm_module(stdlib, foreign, heap) {
                             used = used | (1 << x11);
                             X44: {
                                 x44 = 34 - (x11+x22+x33) | 0;
+                                if(!(((((x22|0)<<25) + ((x33|0)<<20) + ((x23|0)<<15) + ((x32|0)<<10) + ((x11|0)<<5) + (x44|0) | 0) % (workers|0) | 0) == (no|0))) break X44;
                                 if((x44|0) < (1|0)) break X44;
                                 if(used & (1 << x44)) break X44;
                                 used = used | (1 << x44);
@@ -198,7 +208,7 @@ function my_asm_module(stdlib, foreign, heap) {
                                                                         if((x34|0) < (1|0)) break X34;
                                                                         if(used & (1 << x34)) break X34;
                                                                         used = used | (1 << x34);
-                                                                        show_ans4(x11|0,x12|0,x13|0,x14|0,x21|0,x22|0,x23|0,x24|0,x31|0,x32|0,x33|0,x34|0,x41|0,x42|0,x43|0,x44|0);
+                                                                        show_ans4(no|0,x11|0,x12|0,x13|0,x14|0,x21|0,x22|0,x23|0,x24|0,x31|0,x32|0,x33|0,x34|0,x41|0,x42|0,x43|0,x44|0);
                                                                         used = used & ~(1 << x34);
                                                                     }
                                                                     used = used & ~(1 << x31);
@@ -234,7 +244,9 @@ function my_asm_module(stdlib, foreign, heap) {
 
     }
 
-    function count5() {
+    function count5(no, workers) {
+        no = no | 0;
+        workers = workers | 0;
         var max_x13 = 0, max_x15 = 0, max_x23 = 0, max_x31 = 0, max_x32 = 0, max_x33 = 0, max_x34 = 0, min_x13 = 0, min_x15 = 0, min_x23 = 0, min_x31 = 0, min_x32 = 0, min_x33 = 0, min_x34 = 0, x11 = 0, x12 = 0, x13 = 0, x14 = 0, x15 = 0, x21 = 0, x22 = 0, x23 = 0, x24 = 0, x25 = 0, x31 = 0, x32 = 0, x33 = 0, x34 = 0, x35 = 0, x41 = 0, x42 = 0, x43 = 0, x44 = 0, x45 = 0, x51 = 0, x52 = 0, x53 = 0, x54 = 0, x55 = 0;
         var used = 0;
         for(x22 = 1; (x22|0) <= (25|0); x22 = x22 + 1 | 0) {
@@ -253,6 +265,7 @@ function my_asm_module(stdlib, foreign, heap) {
                         if((used & (1 << x42))) continue;
                         used = used | (1 << x42);
                         for(x11 = 1; (x11|0) <= (25|0); x11 = x11 + 1 | 0) {
+                            if(!(((((x22|0)<<20) + ((x44|0)<<15) + ((x24|0)<<10) + ((x42|0)<<5) + (x11|0) | 0) % (workers|0) | 0) == (no|0))) continue;
                             if((used & (1 << x11))) continue;
                             used = used | (1 << x11);
                             min_x33 = max(1|0,(65-(x11+x22+x44)-(25|0))|0)|0|0;
@@ -352,7 +365,7 @@ function my_asm_module(stdlib, foreign, heap) {
                                                                                                             if((x54|0) < (1|0)) break X54;
                                                                                                             if(used & (1 << x54)) break X54;
                                                                                                             used = used | (1 << x54);
-                                                                                                            show_ans5(x11|0,x12|0,x13|0,x14|0,x15|0,x21|0,x22|0,x23|0,x24|0,x25|0,x31|0,x32|0,x33|0,x34|0,x35|0,x41|0,x42|0,x43|0,x44|0,x45|0,x51|0,x52|0,x53|0,x54|0,x55|0);
+                                                                                                            show_ans5(no|0,x11|0,x12|0,x13|0,x14|0,x15|0,x21|0,x22|0,x23|0,x24|0,x25|0,x31|0,x32|0,x33|0,x34|0,x35|0,x41|0,x42|0,x43|0,x44|0,x45|0,x51|0,x52|0,x53|0,x54|0,x55|0);
                                                                                                             used = used & ~(1 << x54);
                                                                                                         }
                                                                                                         used = used & ~(1 << x53);
@@ -415,7 +428,7 @@ function my_asm_module(stdlib, foreign, heap) {
 
 var count = [0]; // 見つけた魔方陣の数
 var lastShowTime = nowimpl ? Date.now() : +new Date();
-function show_ans(matrix) {
+function show_ans(no, matrix) {
     // カウントアップ処理
     var i = 0;
     count[0] += 1;
@@ -443,6 +456,7 @@ function show_ans(matrix) {
 
     // 経路表示
     postMessage({
+        no: no,
         matrix: matrix,
         count:  count
     });
@@ -451,14 +465,14 @@ function show_ans(matrix) {
 
 var module = my_asm_module(
     {}, {
-        show_ans3: function(x11,x12,x13,x21,x22,x23,x31,x32,x33) {
-            show_ans([x11,x12,x13,x21,x22,x23,x31,x32,x33]);
+        show_ans3: function(no,x11,x12,x13,x21,x22,x23,x31,x32,x33) {
+            show_ans(no,[x11,x12,x13,x21,x22,x23,x31,x32,x33]);
         },
-        show_ans4: function(x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44) {
-            show_ans([x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44]);
+        show_ans4: function(no,x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44) {
+            show_ans(no,[x11,x12,x13,x14,x21,x22,x23,x24,x31,x32,x33,x34,x41,x42,x43,x44]);
         },
-        show_ans5: function(x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55) {
-            show_ans([x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55]);
+        show_ans5: function(no,x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55) {
+            show_ans(no,[x11,x12,x13,x14,x15,x21,x22,x23,x24,x25,x31,x32,x33,x34,x35,x41,x42,x43,x44,x45,x51,x52,x53,x54,x55]);
         }
     }
 );

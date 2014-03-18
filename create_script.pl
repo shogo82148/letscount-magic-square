@@ -37,7 +37,7 @@ END
     $func->();
     my $vars = join ',', map { map { "x$_|0" } ($_*10+1..$_*10+$n) } (1..$n);
     end <<END;
- show_ans$n($vars);
+ show_ans$n(no|0,$vars);
 END
 
     my $v = join ', ', map { "$_ = 0" } sort @vars;
@@ -142,7 +142,7 @@ my $count3 = square 3, sub {
     decide 33, 'x11 < x33', [11, 22];
     second 13, 'x11 < x13', [11], [33];
     decide 31, 'x13 < x31', [13, 22];
-    decide 12, undef, [11, 13];
+    decide 12, '( ((x11<<20) + (x22<<16) + (x33<<12) + (x13<<8) + (x31<<4) + x12 | 0) % (workers|0) | 0) == (no|0)', [11, 13];
     decide 23, undef, [13, 33];
     decide 21, undef, [22, 23], [11, 31];
     decide 32, undef, [12, 22], [31, 33];
@@ -154,7 +154,7 @@ my $count4 = square 4, sub {
     search 23, 'x22 < x23', 1, 16;
     search 32, 'x23 < x32', 1, 16;
     second 11, undef, [22, 33];
-    decide 44, undef, [11, 22, 33];
+    decide 44, '(((x22<<25) + (x33<<20) + (x23<<15) + (x32<<10) + (x11<<5) + x44 | 0) % (workers|0) | 0) == (no|0)', [11, 22, 33];
     second 14, undef, [23, 32];
     decide 41, undef, [14, 23, 32];
     second 12, undef, [11, 14], [22, 32];
@@ -172,7 +172,7 @@ my $count5 = square 5, sub {
     search 44, 'x22 < x44', 1, 25;
     search 24, 'x22 < x44', 1, 25;
     search 42, 'x24 < x42', 1, 25;
-    search 11, undef, 1, 25;
+    search 11, '(((x22<<20) + (x44<<15) + (x24<<10) + (x42<<5) + x11 | 0) % (workers|0) | 0) == (no|0)', 1, 25;
     second 33, undef, [11, 22, 44];
     decide 55, undef, [11, 22, 33, 44];
     second 15, undef, [24, 33, 42];
