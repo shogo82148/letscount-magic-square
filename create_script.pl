@@ -170,7 +170,7 @@ my $count4 = square 4, sub {
 my $count5 = square 5, sub {
     search 22, undef, 1, 25;
     search 44, 'x22 < x44', 1, 25;
-    search 24, 'x22 < x44', 1, 25;
+    search 24, 'x22 < x24', 1, 25;
     search 42, 'x24 < x42', 1, 25;
     search 11, '(((x22<<20) + (x44<<15) + (x24<<10) + (x42<<5) + x11 | 0) % (workers|0) | 0) == (no|0)', 1, 25;
     second 33, undef, [11, 22, 44];

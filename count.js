@@ -257,7 +257,7 @@ function my_asm_module(stdlib, foreign, heap) {
                 if((used & (1 << x44))) continue;
                 used = used | (1 << x44);
                 for(x24 = 1; (x24|0) <= (25|0); x24 = x24 + 1 | 0) {
-                    if(!((x22|0) < (x44|0))) continue;
+                    if(!((x22|0) < (x24|0))) continue;
                     if((used & (1 << x24))) continue;
                     used = used | (1 << x24);
                     for(x42 = 1; (x42|0) <= (25|0); x42 = x42 + 1 | 0) {
